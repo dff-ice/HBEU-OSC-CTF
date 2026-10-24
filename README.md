@@ -26,11 +26,17 @@ python -m pip install -r requirements.txt
 python -m mkdocs serve
 ```
 
-浏览器访问 [http://127.0.0.1:8000](http://127.0.0.1:8000)。也可以使用 Docker Compose：
+本地预览和静态构建都通过 Python 运行 MkDocs：
 
 ```bash
-docker compose up --build
+# 启动本地预览
+python -m mkdocs serve
+
+# 构建静态站点到 site/ 目录
+python -m mkdocs build
 ```
+
+浏览器访问 [http://127.0.0.1:8000](http://127.0.0.1:8000) 查看预览。
 
 ## 参与维护
 

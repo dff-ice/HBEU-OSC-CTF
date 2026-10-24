@@ -1,8 +1,0 @@
-version: '0'
-services:
-  hello-ctf:
-    build: .
-    image: hello-ctf
-    container_name: hello-ctf
-    ports:
-      - "8000:8000"
