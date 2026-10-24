@@ -1,52 +1,39 @@
 # Hello-CTF 站点管理面板
 
-Flask 后端 + 无构建步骤的原生 HTML/JS 前端，用于在浏览器里管理赛事、首页内容、文档和部署。
+Flask 后端与原生 HTML/JS 前端，用于管理首页内容、文档、工具页数据和本地预览/部署。
 
 ## 安装与首次运行
 
-面板自身依赖只有 Flask 和 requests（系统 Python 已装）。部署功能需要 mkdocs，
-由于系统 Python 受 PEP 668 限制，mkdocs 等站点依赖装在项目根的 `.venv` 里：
+项目依赖安装在仓库根目录的 `.venv` 中：
 
 ```bash
-# 站点依赖（只需一次）：创建 .venv 并安装
-python3 -m venv .venv            # 若提示缺 python3-venv，用 python3 -m venv --without-pip .venv 再引导 pip
-.venv/bin/pip install -r requirements.txt
-
-# 面板配置与启动
-cp admin/config.example.json admin/config.json   # 然后编辑 config.json
-python3 admin/app.py
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
 ```
 
-部署/预览任务会自动优先使用 `.venv/bin/python` 和 `.venv/bin/mkdocs`，无需手动激活虚拟环境。
+创建 `admin/config.json`，至少设置管理密码：
 
-面板监听 `0.0.0.0:9000`，内网访问地址：`http://<本机IP>:9000`。
-`admin/config.json` 已加入 `.gitignore`，不会被提交。密码也可以用环境变量
-`ADMIN_PASSWORD` 代替配置文件。
+```json
+{
+  "admin_password": "请替换为强密码",
+  "port": 9000
+}
+```
 
-## 配置项
+也可以通过 `ADMIN_PASSWORD` 环境变量设置密码，然后运行：
 
-| 键 | 说明 |
-| --- | --- |
-| `admin_password` | 面板登录密码（必填） |
-| `proxy` | 代理地址，如 `http://192.168.1.71:7897`；面板内的 git 操作（含部署）和 collector 请求都会走它，留空不走代理 |
-| `inbox_url` | 公网消息收集器（`collector/`）地址，如 `https://collector.example.com`，留空则消息盒子不可用 |
-| `inbox_token` | 收集器的 `COLLECTOR_TOKEN` |
-| `port` | 监听端口，默认 9000 |
+```bash
+python admin/app.py
+```
+
+面板监听 `0.0.0.0:9000`，内网访问地址为 `http://<本机IP>:9000`。部署和预览任务会优先使用 `.venv` 中的 Python 与 MkDocs。
 
 ## 功能
 
-- **赛事管理**：直接维护本仓库 `docs/Event/json/CN.json`（仅国内赛事），支持添加 / 编辑 / 删除，
-  保存后自动 `git pull --rebase → commit → push`（commit message：`admin: add/update/delete event <name>`）。
-  字段只有名称 / 链接 / 起止时间 / 详情（默认 `赛制/类型: Jeopardy`），状态由比赛时间自动推导
-  （即将开始 / 正在进行 / 已经结束）。「存档」视图可查看 / 编辑 / 删除 / 恢复 `CN_archive.json` 里的历史赛事。
-  国外赛事由 `build.py` 每日从 CTFtime RSS 抓取，无需人工维护。
-- **首页内容**：编辑 `docs/index_content.json` 的三个有效字段，按模块切换（顶栏）：
-  `announcement` 公告（分栏编辑，右侧实时预览首页实际效果）、`projects` 项目推荐、`navCards` 导航卡片。
-- **消息盒子**：从公网收集器（`collector/`，见 `collector/README.md`）拉取浏览器端提交的
-  赛事和意见反馈；赛事提交可一键导入到赛事编辑表单。
-- **工具页**：管理 `docs/sidebar/tools_data.json`（工具一览页数据源），按 tag 分组展示，支持多标签、新建标签。
-- **文档编辑**：浏览 `docs/` 下全部 Markdown 文件，在线编辑 / 预览 / 新建，路径限制在 `docs/` 内。
-- **部署**：一键部署（`python build.py` → `mkdocs build` → `git add/commit/push`）、仅构建、
-  `mkdocs serve` 预览开关（0.0.0.0:8000）。任务异步执行，日志实时轮询。
-  命令自动优先使用 `.venv/bin/` 下的 python/mkdocs；
-  git push 失败（如 HTTPS remote 无凭据）也会在日志和返回信息中说明。
+- **首页内容**：编辑 `docs/index_content.json` 中的公告、项目推荐和导航卡片。
+- **工具页**：管理 `docs/sidebar/tools_data.json`，支持按标签分组。
+- **文档编辑**：浏览并编辑 `docs/` 下的 Markdown 文件，支持预览和新建。
+- **部署与预览**：构建 MkDocs 站点、部署当前配置的 Git 远程仓库，或启动本地预览。
+- **仓库同步**：查看 Git 状态并执行拉取、推送和中止变基操作。
+
+面板的 Git 同步和部署会使用本地仓库配置的远程地址；当前仓库未配置远程时，这些推送操作不可用。

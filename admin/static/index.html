@@ -343,10 +343,7 @@
         <div class="sub">管理面板</div>
       </div>
     </div>
-    <button class="tab-btn active" data-tab="events">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-      <span>赛事管理</span></button>
-    <button class="tab-btn" data-tab="home">
+    <button class="tab-btn active" data-tab="home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
       <span>首页内容</span></button>
     <button class="tab-btn" data-tab="docs">
@@ -355,9 +352,6 @@
     <button class="tab-btn" data-tab="tools">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
       <span>工具页</span></button>
-    <button class="tab-btn" data-tab="inbox">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
-      <span>消息盒子</span></button>
     <button class="tab-btn" data-tab="deploy">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
       <span>部署</span></button>
@@ -365,30 +359,6 @@
   </nav>
 
   <main id="content">
-    <!-- 赛事 -->
-    <section class="panel active" id="panel-events">
-      <div class="panel-head">
-        <h2>国内赛事</h2>
-        <div class="desc">本仓库 / docs/Event/json/CN.json</div>
-      </div>
-      <div class="toolbar">
-        <div class="seg" id="event-view-seg">
-          <button class="seg-btn active" data-view="active">在列赛事</button>
-          <button class="seg-btn" data-view="archive">存档</button>
-        </div>
-        <input type="search" id="event-search" placeholder="搜索赛事名称…">
-        <div class="spacer"></div>
-        <button class="btn" id="event-refresh-btn">刷新</button>
-        <button class="btn btn-primary" id="event-add-btn">添加比赛</button>
-      </div>
-      <div class="card table-card">
-        <table>
-          <thead><tr><th>名称</th><th>链接</th><th>比赛时间</th><th>状态</th><th style="width:170px;">操作</th></tr></thead>
-          <tbody id="events-tbody"><tr><td colspan="5" class="empty-row">加载中…</td></tr></tbody>
-        </table>
-      </div>
-    </section>
-
     <!-- 首页内容 -->
     <section class="panel" id="panel-home">
       <div class="panel-head">
@@ -478,24 +448,11 @@
       <div id="tools-groups"></div>
     </section>
 
-    <!-- 消息盒子 -->
-    <section class="panel" id="panel-inbox">
-      <div class="panel-head">
-        <h2>消息盒子</h2>
-        <div class="desc">公网 collector 收集的赛事提交与意见反馈</div>
-      </div>
-      <div class="toolbar">
-        <div class="spacer"></div>
-        <button class="btn" id="inbox-refresh-btn">刷新</button>
-      </div>
-      <div id="inbox-list"></div>
-    </section>
-
     <!-- 部署 -->
     <section class="panel" id="panel-deploy">
       <div class="panel-head">
         <h2>部署</h2>
-        <div class="desc">build.py → mkdocs build → git push</div>
+        <div class="desc">mkdocs build → git push</div>
       </div>
       <div class="card card-pad" style="margin-bottom:14px;">
         <div class="repo-bar">
@@ -612,7 +569,6 @@ async function enterMain() {
   await api("/api/me");
   $("login-view").style.display = "none";
   $("main-view").style.display = "block";
-  loadEvents();
   loadHomeContent();
   loadDocsTree();
   loadTools();
@@ -637,291 +593,9 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
     document.querySelectorAll(".tab-btn").forEach((b) => b.classList.toggle("active", b === btn));
     document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
     $("panel-" + btn.dataset.tab).classList.add("active");
-    if (btn.dataset.tab === "inbox" && !inboxLoaded) loadInbox();
     if (btn.dataset.tab === "deploy") loadRepoStatus();
   };
 });
-
-// ---------- 消息盒子 ----------
-let inboxLoaded = false;
-
-async function loadInbox() {
-  $("inbox-list").innerHTML = '<div class="card card-pad">加载中…</div>';
-  try {
-    const data = await api("/api/inbox");
-    inboxLoaded = true;
-    renderInbox(data.messages || []);
-  } catch (e) {
-    $("inbox-list").innerHTML = `<div class="card card-pad">${escapeHtml(e.message)}</div>`;
-  }
-}
-
-function switchTab(tab) {
-  document.querySelector(`.tab-btn[data-tab="${tab}"]`).click();
-}
-
-function renderInbox(messages) {
-  const list = $("inbox-list");
-  if (!messages.length) {
-    list.innerHTML = '<div class="card card-pad">暂无消息</div>';
-    return;
-  }
-  list.innerHTML = "";
-  messages.slice().reverse().forEach((m) => {
-    const isEvent = m.type === "event";
-    const box = document.createElement("div");
-    box.className = "msg card";
-    let body;
-    if (isEvent && m.content && typeof m.content === "object") {
-      const c = m.content;
-      body = `<div class="kv">${
-        [["名称", c.name], ["链接", c.link], ["开始", c.comp_time_start],
-         ["结束", c.comp_time_end], ["详情", c.detail]]
-          .filter(([, v]) => v)
-          .map(([k, v]) => `<span>${k}</span><span>${escapeHtml(String(v))}</span>`)
-          .join("")
-      }</div>`;
-    } else {
-      body = escapeHtml(typeof m.content === "string" ? m.content : JSON.stringify(m.content, null, 2));
-    }
-    box.innerHTML = `<div class="card-pad">
-      <div class="msg-head">
-        <span class="pill ${isEvent ? "pill-tag" : ""}">${isEvent ? "赛事提交" : "意见反馈"}</span>
-        <span class="msg-title">${escapeHtml(m.title || "")}</span>
-        <span class="msg-time">${escapeHtml(m.time || "")}</span>
-        <div class="spacer"></div>
-        ${isEvent
-          ? `<button class="btn btn-sm btn-primary" data-approve>通过并加入当前赛事</button>
-             <button class="btn btn-sm" data-import>修改并加入当前赛事</button>
-             <button class="btn btn-sm btn-danger" data-del>删除</button>`
-          : `<button class="btn btn-sm btn-primary" data-done>标记为完成</button>`}
-      </div>
-      <div class="msg-body">${body}</div>
-    </div>`;
-    const eventFromContent = () => {
-      const c = m.content || {};
-      const ev = {};
-      for (const k of ["name", "link", "comp_time_start", "comp_time_end", "detail"]) {
-        if (c[k]) ev[k] = String(c[k]);
-      }
-      if (c.pending) ev.pending = true;
-      return ev;
-    };
-    const approveBtn = box.querySelector("[data-approve]");
-    if (approveBtn) {
-      approveBtn.onclick = async () => {
-        const yes = await confirmDialog("通过赛事",
-          `直接把「${m.title}」加入当前赛事并推送？`, "确认通过", false);
-        if (!yes) return;
-        try {
-          const data = await api("/api/events/add",
-            { method: "POST", body: { event: eventFromContent() } });
-          await api("/api/inbox/delete", { method: "POST", body: { id: m.id } });
-          toast((data.result || "已加入") + "，消息已清除");
-          loadInbox();
-        } catch (e) {
-          toast(e.message, false);
-        }
-      };
-    }
-    const importBtn = box.querySelector("[data-import]");
-    if (importBtn) {
-      importBtn.onclick = () => {
-        switchTab("events");
-        if (eventView !== "active") setEventView("active");
-        openEventModal(eventFromContent(), true);
-      };
-    }
-    const delBtn = box.querySelector("[data-del]");
-    if (delBtn) {
-      delBtn.onclick = async () => {
-        const yes = await confirmDialog("删除消息", "确认删除这条消息？该操作不可恢复。");
-        if (!yes) return;
-        try {
-          await api("/api/inbox/delete", { method: "POST", body: { id: m.id } });
-          toast("已删除");
-          loadInbox();
-        } catch (e) {
-          toast(e.message, false);
-        }
-      };
-    }
-    const doneBtn = box.querySelector("[data-done]");
-    if (doneBtn) {
-      doneBtn.onclick = async () => {
-        const yes = await confirmDialog("标记为完成",
-          "确认这条反馈已处理完？将从消息盒子移除。", "标记为完成", false);
-        if (!yes) return;
-        try {
-          await api("/api/inbox/delete", { method: "POST", body: { id: m.id } });
-          toast("已标记为完成");
-          loadInbox();
-        } catch (e) {
-          toast(e.message, false);
-        }
-      };
-    }
-    list.appendChild(box);
-  });
-}
-$("inbox-refresh-btn").onclick = loadInbox;
-
-// ---------- 赛事 ----------
-const EVENT_FIELDS = [
-  ["name", "名称 *"],
-  ["link", "链接"],
-  ["comp_time_start", "比赛开始（2025年04月04日 10:00）"],
-  ["comp_time_end", "比赛结束"],
-  ["detail", "详情（默认：赛制/类型: Jeopardy）"],
-];
-let allEvents = [];
-let editingOriginalName = null;
-let eventView = "active"; // active | archive
-let editingFromArchive = false;
-
-async function loadEvents() {
-  const url = eventView === "archive" ? "/api/events/archive" : "/api/events";
-  try {
-    const data = await api(url);
-    allEvents = data.events;
-    renderEvents();
-  } catch (e) {
-    $("events-tbody").innerHTML = `<tr><td colspan="5" class="empty-row">${escapeHtml(e.message)}</td></tr>`;
-  }
-}
-
-function renderEvents() {
-  const kw = $("event-search").value.trim().toLowerCase();
-  const rows = allEvents.filter((e) => !kw || (e.name || "").toLowerCase().includes(kw));
-  if (!rows.length) {
-    $("events-tbody").innerHTML = `<tr><td colspan="5" class="empty-row">无匹配赛事</td></tr>`;
-    return;
-  }
-  const archived = eventView === "archive";
-  $("events-tbody").innerHTML = rows.map((e, i) => `
-    <tr>
-      <td>${escapeHtml(e.name)}</td>
-      <td class="url-cell">${e.link ? `<a href="${escapeHtml(e.link)}" target="_blank" rel="noopener">${escapeHtml(e.link)}</a>` : "—"}</td>
-      <td class="mono" style="font-size:12px;">${escapeHtml(e.comp_time_start || "待定")}<br>${escapeHtml(e.comp_time_end || "")}</td>
-      <td><span class="pill">${archived ? "已存档" : escapeHtml(e.status || "—")}</span></td>
-      <td><div class="ops">
-        ${archived ? `<button class="btn btn-sm" data-restore="${i}">恢复</button>` : ""}
-        <button class="btn btn-sm" data-edit="${i}">编辑</button>
-        <button class="btn btn-sm btn-danger" data-del="${i}">删除</button>
-      </div></td>
-    </tr>`).join("");
-  $("events-tbody").querySelectorAll("[data-edit]").forEach((b) => {
-    b.onclick = () => openEventModal(rows[+b.dataset.edit]);
-  });
-  $("events-tbody").querySelectorAll("[data-del]").forEach((b) => {
-    b.onclick = () => deleteEvent(rows[+b.dataset.del]);
-  });
-  $("events-tbody").querySelectorAll("[data-restore]").forEach((b) => {
-    b.onclick = () => restoreEvent(rows[+b.dataset.restore]);
-  });
-}
-
-$("event-search").oninput = renderEvents;
-$("event-refresh-btn").onclick = loadEvents;
-$("event-add-btn").onclick = () => {
-  if (eventView !== "active") setEventView("active");
-  openEventModal(null);
-};
-
-function setEventView(view) {
-  eventView = view;
-  document.querySelectorAll("#event-view-seg .seg-btn").forEach((b) =>
-    b.classList.toggle("active", b.dataset.view === view));
-  loadEvents();
-}
-document.querySelectorAll("#event-view-seg .seg-btn").forEach((b) => {
-  b.onclick = () => setEventView(b.dataset.view);
-});
-
-function openEventModal(event, asNew) {
-  editingFromArchive = !asNew && eventView === "archive" && !!event;
-  editingOriginalName = event && !asNew ? event.name : null;
-  const fieldsHtml = EVENT_FIELDS.map(([key, label]) => {
-    if (key === "detail") {
-      return `<div class="full">
-        <label>${label}</label>
-        <textarea data-field="${key}" rows="5" style="resize:vertical;min-height:110px;">${escapeHtml(event ? (event[key] ?? "") : "")}</textarea></div>`;
-    }
-    return `<div class="${key === "name" || key === "link" ? "full" : ""}">
-      <label>${label}</label>
-      <input data-field="${key}" value="${escapeHtml(event ? (event[key] ?? "") : "")}"></div>`;
-  }).join("");
-  const pendingChecked = event && event.pending ? "checked" : "";
-  const freshmanChecked = event && event.freshman ? "checked" : "";
-  openModal(
-    event ? `编辑比赛：${event.name}` : "添加比赛",
-    `<div class="form-grid">${fieldsHtml}</div>
-     <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;cursor:pointer;width:100%;">
-       <input type="checkbox" id="event-pending" ${pendingChecked} style="width:14px;height:14px;flex:none;margin:0;">
-       <span>时间待定（已官宣但具体时间未公布）</span>
-     </label>
-     <label style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;cursor:pointer;width:100%;">
-       <input type="checkbox" id="event-freshman" ${freshmanChecked} style="width:14px;height:14px;flex:none;margin:0;">
-       <span>新生赛（新手向赛事：长周期也强制显示在首页日历时间轴，卡片带「新人推荐」标签）</span>
-     </label>`,
-    { onOk: saveEventModal }
-  );
-}
-
-async function saveEventModal() {
-  const event = {};
-  document.querySelectorAll("#modal-body [data-field]").forEach((el) => {
-    const key = el.dataset.field;
-    const v = el.value.trim();
-    if (v === "" && key !== "name") return; // 空字段不写入，保持 JSON 简洁
-    event[key] = v;
-  });
-  if ($("event-pending").checked) event.pending = true;
-  if ($("event-freshman").checked) event.freshman = true;
-  if (!event.name) { toast("名称不能为空", false); return; }
-
-  const action = editingOriginalName
-    ? (editingFromArchive ? "archive_update" : "update")
-    : "add";
-  const body = editingOriginalName ? { original_name: editingOriginalName, event } : { event };
-  try {
-    const data = await api(`/api/events/${action}`, { method: "POST", body });
-    toast(data.result || "已提交");
-    closeModal();
-    loadEvents();
-  } catch (e) {
-    toast(e.message, false);
-  }
-}
-
-async function deleteEvent(event) {
-  const archived = eventView === "archive";
-  const yes = await confirmDialog("删除赛事",
-    `确认删除「${event.name}」${archived ? "（存档）" : ""}？该操作会直接提交并推送到本仓库。`);
-  if (!yes) return;
-  try {
-    const data = await api(`/api/events/${archived ? "archive_delete" : "delete"}`,
-      { method: "POST", body: { name: event.name } });
-    toast(data.result || "已删除");
-    loadEvents();
-  } catch (e) {
-    toast(e.message, false);
-  }
-}
-
-async function restoreEvent(event) {
-  const yes = await confirmDialog("恢复赛事",
-    `确认把「${event.name}」从存档移回在列赛事？该操作会直接提交并推送到本仓库。`, "确认恢复", false);
-  if (!yes) return;
-  try {
-    const data = await api("/api/events/restore",
-      { method: "POST", body: { name: event.name } });
-    toast(data.result || "已恢复");
-    loadEvents();
-  } catch (e) {
-    toast(e.message, false);
-  }
-}
 
 // ---------- 首页内容 ----------
 // index_content.json 只有三个键是前端真实消费的：

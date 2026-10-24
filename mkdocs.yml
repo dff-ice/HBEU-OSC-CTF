@@ -167,7 +167,6 @@ extra_javascript:
   - javascripts/statis.js
 
 # ----- other -----
-  - javascripts/FullCalendar.js
   - shell/feedback-widget.js
 
 

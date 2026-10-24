@@ -37,12 +37,7 @@
       "title": "hello-ssrf",
       "url": "https://github.com/ProbiusOfficial/hello-ssrf"
     },
-    {
-      "desc": "历届赛事题目归档仓库",
-      "icon": "i-archive",
-      "title": "CTF-Archives",
-      "url": "https://github.com/CTF-Archives"
-    }
+
   ],
   "navCards": [
     {

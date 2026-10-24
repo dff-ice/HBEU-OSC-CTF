@@ -45,15 +45,6 @@
 <body>
 <script src="{{ 'shell/search.js' | url }}"></script>
 <script src="{{ 'shell/shell.js' | url }}"></script>
-<script>
-  /* 旧赛事页路径（/Event/、/event 及子页，无扩展名的）统一跳新赛事中心 */
-  (function () {
-    var p = location.pathname;
-    if (/^\/event/i.test(p) && !/\.[a-z0-9]+$/i.test(p)) {
-      location.replace("/sidebar/events.html");
-    }
-  })();
-</script>
 <script>Shell.mount({ active: "" });</script>
 
 <div class="main">

@@ -1,4 +1,4 @@
-"""部署相关：build.py / mkdocs build / git push / mkdocs serve 预览。
+"""部署相关：mkdocs build / git push / mkdocs serve 预览。
 
 所有任务异步跑在线程里，输出进内存日志 buffer，前端轮询增量。
 """
@@ -107,9 +107,6 @@ class Deployer:
 
     def _do_build(self):
         self._resolve_tools()
-        if not self._run([self.python, "build.py"], BUILD_TIMEOUT):
-            self._log("build.py 执行失败，中止")
-            return False
         if not self._mkdocs_available():
             return False
         if not self._run([self.mkdocs, "build"], BUILD_TIMEOUT):
