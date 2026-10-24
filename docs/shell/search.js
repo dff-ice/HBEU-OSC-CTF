@@ -7,6 +7,12 @@
 (function () {
   "use strict";
 
+  /* Resolve search assets and result links from the script URL for project Pages. */
+  var SITE_ROOT = new URL("../", document.currentScript.src);
+  function siteUrl(path) {
+    return new URL(String(path || "").replace(/^\/+/, ""), SITE_ROOT).href;
+  }
+
   var CSS = `
   .hs-mask{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.42);
     -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
@@ -49,7 +55,7 @@
   function loadIndex() {
     if (index) return Promise.resolve(index);
     if (loading) return loading;
-    loading = fetch("/search/search_index.json")
+    loading = fetch(siteUrl("search/search_index.json"))
       .then(function (r) { return r.json(); })
       .then(function (d) {
         index = d.docs.map(function (x) {
@@ -122,7 +128,7 @@
       return;
     }
     list.innerHTML = results.map(function (r, i) {
-      return '<a class="hs-item' + (i === sel ? " sel" : "") + '" data-i="' + i + '" href="/' + r.doc.location + '">' +
+      return '<a class="hs-item' + (i === sel ? " sel" : "") + '" data-i="' + i + '" href="' + siteUrl(r.doc.location) + '">' +
         '<div class="t">' + highlight(r.doc.title, terms) + "</div>" +
         '<div class="loc">/' + esc(r.doc.location.split("#")[0]) + "</div>" +
         '<div class="s">' + snippet(r.doc, terms, r.first) + "</div>" +

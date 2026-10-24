@@ -1,6 +1,6 @@
 /* ============================================================
    Hello-CTF 共享外壳 shell.js
-   用法：<script src="/shell/shell.js"></script>
+   用法：<script src="../shell/shell.js"></script>（或按页面目录调整相对路径）
          <script>Shell.mount({ active: "home" });</script>
    负责：注入图标 sprite、挂载侧边栏 + 项目动态面板 + 移动端按钮、
          主题切换、收起态、红点未读、导航翻页。
@@ -9,20 +9,24 @@
 (function () {
   "use strict";
 
+  /* Resolve links from this script so project pages under a repository path work. */
+  const SITE_ROOT = new URL("../", document.currentScript.src);
+  const siteUrl = (path) => new URL(String(path || "").replace(/^\/+/, ""), SITE_ROOT).href;
+
   /* 全站导航定义（单一事实来源；增删入口只改这里） */
   const NAV = [
     { cap: "文档主体 · DOCS" },
-    { key: "home",       icon: "i-home",     label: "首页",     href: "/",                        idx: "01" },
-    { key: "start",      icon: "i-flag",     label: "开始阅读", href: "/contents/",                 idx: "02" },
-    { key: "directions", icon: "i-globe",    label: "方向一览", href: "/sidebar/directions.html", idx: "03" },
+    { key: "home",       icon: "i-home",     label: "首页",     href: siteUrl("/"),                        idx: "01" },
+    { key: "start",      icon: "i-flag",     label: "开始阅读", href: siteUrl("/contents/"),                 idx: "02" },
+    { key: "directions", icon: "i-globe",    label: "方向一览", href: siteUrl("/sidebar/directions.html"), idx: "03" },
     { cap: "工具 · TOOLS" },
-    { key: "tools",      icon: "i-toolbox",  label: "工具一览", href: "/sidebar/tools.html" },
+    { key: "tools",      icon: "i-toolbox",  label: "工具一览", href: siteUrl("/sidebar/tools.html") },
     { cap: "技能 · SKILL" },
-    { key: "skill",      icon: "i-tree",     label: "技能树",   href: "/sidebar/ctf-skill.html" },
+    { key: "skill",      icon: "i-tree",     label: "技能树",   href: siteUrl("/sidebar/ctf-skill.html") },
     { cap: "其他 · MORE" },
     // 暂时隐藏反馈与群聊入口，保留以便后续恢复：
     // { key: "feedback", icon: "i-users", label: "反馈与群聊", href: "/sidebar/feedback.html" },
-    { key: "about",      icon: "i-zap",      label: "关于",     href: "/hc-preface/about/" }
+    { key: "about",      icon: "i-zap",      label: "关于",     href: siteUrl("/hc-preface/about/") }
   ];
 
   function icon(id, cls) {
@@ -52,7 +56,7 @@
     '<button class="menu-btn" id="menuBtn" aria-label="菜单">☰</button>' +
     '<div class="overlay" id="overlay"></div>' +
     '<aside class="sidebar" id="sidebar">' +
-      '<a class="logo" href="/"><span class="mark">' + icon("i-flag") + '</span>Hello<em>CTF</em></a>' +
+      '<a class="logo" href="' + siteUrl("/") + '"><span class="mark">' + icon("i-flag") + '</span>Hello<em>CTF</em></a>' +
       '<a class="nav-item" id="searchToggle" style="cursor:pointer">' + icon("i-search") + '搜索 <span class="idx">Ctrl+K</span></a>' +
       '<a class="nav-item" id="feedToggle">' + icon("i-mega") + '项目动态 <span class="feed-badge" id="feedBadge" hidden>0</span></a>' +
       '<div class="nav-wrap"><nav class="nav" id="navScroll">' + items + '</nav>' +
@@ -79,7 +83,7 @@
       const cached = sessionStorage.getItem("hc-icons");
       if (cached) { insertSvg(cached); return Promise.resolve(); }
     } catch (e) {}
-    return fetch("/shell/icons.svg")
+    return fetch(siteUrl("shell/icons.svg"))
       .then(r => r.text())
       .then(svg => {
         insertSvg(svg);
@@ -162,7 +166,7 @@
     (async function loadFeed() {
       let total = 0;
       try {
-        const data = await (await fetch("/index_content.json")).json();
+        const data = await (await fetch(siteUrl("index_content.json"))).json();
         const lines = (data.announcement || "").split("\n").map(s => s.trim()).filter(Boolean).slice(0, 4);
         document.getElementById("fpAnnounce").innerHTML = lines.length
           ? lines.map(s =>
@@ -213,7 +217,7 @@
   function loadFeedbackWidget() {
     if (window.__hcFbWidget) return;
     const s = document.createElement("script");
-    s.src = "/shell/feedback-widget.js";
+    s.src = siteUrl("shell/feedback-widget.js");
     document.body.appendChild(s);
   }
   */
