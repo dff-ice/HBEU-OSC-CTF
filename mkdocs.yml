@@ -167,7 +167,7 @@ extra_javascript:
   - javascripts/statis.js
 
 # ----- other -----
-  - shell/feedback-widget.js
+  # - shell/feedback-widget.js  # 暂时隐藏反馈小喇叭，保留恢复入口。
 
 
 extra_css:

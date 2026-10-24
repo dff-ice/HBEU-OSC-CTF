@@ -17,8 +17,10 @@
   {% include "partials/source-file.html" %}
 {% endif %}
 
+{# 暂时隐藏页面反馈组件，保留逻辑供后续恢复：
 <!-- Was this page helpful? -->
 {% include "partials/feedback.html" %}
+#}
 
 <!-- Previous and next pages link -->
 <nav
@@ -76,8 +78,10 @@ aria-label="{{ lang.t('footer') }}"
 {% endif %}
 </nav>
 
+{# 暂时隐藏文档评论区，保留逻辑供后续恢复：
 <!-- Comment system -->
 {% include "partials/comments.html" %}
+#}
 
 <!-- 才懒得给你加空格呢 给你塞个 Pangu.js 哼！ -->
 <head>

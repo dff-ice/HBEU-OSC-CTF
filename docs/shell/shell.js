@@ -4,7 +4,7 @@
          <script>Shell.mount({ active: "home" });</script>
    负责：注入图标 sprite、挂载侧边栏 + 项目动态面板 + 移动端按钮、
          主题切换、收起态、红点未读、导航翻页。
-   页面级逻辑（日历、卡片等）由页面自己实现。
+   页面级逻辑（卡片等）由页面自己实现。
    ============================================================ */
 (function () {
   "use strict";
@@ -20,8 +20,8 @@
     { cap: "技能 · SKILL" },
     { key: "skill",      icon: "i-tree",     label: "技能树",   href: "/sidebar/ctf-skill.html" },
     { cap: "其他 · MORE" },
-    { key: "feedback",   icon: "i-users",    label: "反馈与群聊", href: "/sidebar/feedback.html" },
-    { key: "teams",      icon: "i-flag",     label: "联合战队", href: "/sidebar/under-construction.html" },
+    // 暂时隐藏反馈与群聊入口，保留以便后续恢复：
+    // { key: "feedback", icon: "i-users", label: "反馈与群聊", href: "/sidebar/feedback.html" },
     { key: "about",      icon: "i-zap",      label: "关于",     href: "/hc-preface/about/" }
   ];
 
@@ -208,13 +208,15 @@
   }
 
   /* ---------- 挂载入口 ---------- */
-  /* 注入全站反馈小喇叭（右下角），自身防重 */
+  /*
+  // 注入全站反馈小喇叭（右下角），自身防重；暂时隐藏，逻辑留存。
   function loadFeedbackWidget() {
     if (window.__hcFbWidget) return;
     const s = document.createElement("script");
     s.src = "/shell/feedback-widget.js";
     document.body.appendChild(s);
   }
+  */
 
   window.Shell = {
     /* 完整外壳：侧边栏 + 项目动态（首页 / 独立页用） */
@@ -232,7 +234,7 @@
       var st = document.getElementById("searchToggle");
       if (st && window.ShellSearch) st.onclick = function () { window.ShellSearch.open(); };
       injectIcons();
-      loadFeedbackWidget();
+      // loadFeedbackWidget(); // 暂时隐藏反馈小喇叭，保留恢复入口。
       document.body.classList.add("shell-mounted");
     },
     /* 仅项目动态面板：挂到页面里已有的按钮上（mkdocs 文档页头部用） */

@@ -108,7 +108,7 @@
 </style>
 </head>
 <body>
-<div class="main">
+<div class="main" hidden>
   <div class="wrap">
 
     <header class="page-head">
@@ -210,67 +210,68 @@
 <script src="/shell/shell.js"></script>
 <script>Shell.mount({ active: "feedback" });</script>
 <script>
-(function () {
-  /* 群号公布后：填入 GROUP_NUMBER 与 GROUP_URL，复制按钮与加群按钮自动启用 */
-  var GROUP_NUMBER = '590430891';
-  var GROUP_URL = 'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=wJ35e-T-qSlU7Y3Cs-PAasrAvZfRSc9k&authKey=WNEQbZUpolxgfKjUHHoUIoTBvSnvk2jZtcyWlhaDcUZ6ZYGgvywqi1ah5D7UwUrg&noverify=0&group_code=590430891';
-
-  var numEl = document.getElementById('groupNum');
-  var copyBtn = document.getElementById('copyGroupBtn');
-  var copyLabel = document.getElementById('copyGroupLabel');
-  var joinBtn = document.getElementById('joinGroupBtn');
-
-  if (GROUP_NUMBER) {
-    numEl.textContent = GROUP_NUMBER;
-    numEl.classList.remove('pending');
-    copyBtn.disabled = false;
-    var badge = document.querySelector('.card .badge');
-    if (badge) badge.textContent = '开放加入';
-  }
-  if (GROUP_URL) {
-    joinBtn.href = GROUP_URL;
-    joinBtn.hidden = false;
-  }
-
-  copyBtn.addEventListener('click', function () {
-    if (!GROUP_NUMBER) return;
-    navigator.clipboard.writeText(GROUP_NUMBER).then(function () {
-      copyLabel.textContent = '已复制';
-      copyBtn.classList.add('copied');
-      setTimeout(function () {
-        copyLabel.textContent = '复制群号';
-        copyBtn.classList.remove('copied');
-      }, 1500);
-    });
-  });
-})();
-
-/* 快速留言 → Hello-CTF 消息收集器（collector，部署在公网机器上） */
-(function () {
-  var COLLECTOR_ENDPOINT = 'https://helloctfmsg.cyclens.tech/api/submit';
-  var btn = document.getElementById('fbSend');
-  var msg = document.getElementById('fbMsg');
-  btn.addEventListener('click', async function () {
-    var text = document.getElementById('fbText').value.trim();
-    if (!text) { msg.textContent = '先写点内容再发送。'; return; }
-    btn.disabled = true;
-    msg.textContent = '发送中…';
-    try {
-      var res = await fetch(COLLECTOR_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'feedback', title: '站点留言', content: text }),
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      document.getElementById('fbText').value = '';
-      msg.textContent = '已发送，感谢反馈！';
-    } catch (e) {
-      msg.textContent = '发送失败（' + ((e && e.message) || e) + '），也可以走 GitHub Issue。';
-    } finally {
-      btn.disabled = false;
-    }
-  });
-})();
+// 反馈和群聊交互暂时隐藏；保留原逻辑，恢复时移除本注释。
+// (function () {
+//   /* 群号公布后：填入 GROUP_NUMBER 与 GROUP_URL，复制按钮与加群按钮自动启用 */
+//   var GROUP_NUMBER = '590430891';
+//   var GROUP_URL = 'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=wJ35e-T-qSlU7Y3Cs-PAasrAvZfRSc9k&authKey=WNEQbZUpolxgfKjUHHoUIoTBvSnvk2jZtcyWlhaDcUZ6ZYGgvywqi1ah5D7UwUrg&noverify=0&group_code=590430891';
+//
+//   var numEl = document.getElementById('groupNum');
+//   var copyBtn = document.getElementById('copyGroupBtn');
+//   var copyLabel = document.getElementById('copyGroupLabel');
+//   var joinBtn = document.getElementById('joinGroupBtn');
+//
+//   if (GROUP_NUMBER) {
+//     numEl.textContent = GROUP_NUMBER;
+//     numEl.classList.remove('pending');
+//     copyBtn.disabled = false;
+//     var badge = document.querySelector('.card .badge');
+//     if (badge) badge.textContent = '开放加入';
+//   }
+//   if (GROUP_URL) {
+//     joinBtn.href = GROUP_URL;
+//     joinBtn.hidden = false;
+//   }
+//
+//   copyBtn.addEventListener('click', function () {
+//     if (!GROUP_NUMBER) return;
+//     navigator.clipboard.writeText(GROUP_NUMBER).then(function () {
+//       copyLabel.textContent = '已复制';
+//       copyBtn.classList.add('copied');
+//       setTimeout(function () {
+//         copyLabel.textContent = '复制群号';
+//         copyBtn.classList.remove('copied');
+//       }, 1500);
+//     });
+//   });
+// })();
+//
+// /* 快速留言 → Hello-CTF 消息收集器（collector，部署在公网机器上） */
+// (function () {
+//   var COLLECTOR_ENDPOINT = 'https://helloctfmsg.cyclens.tech/api/submit';
+//   var btn = document.getElementById('fbSend');
+//   var msg = document.getElementById('fbMsg');
+//   btn.addEventListener('click', async function () {
+//     var text = document.getElementById('fbText').value.trim();
+//     if (!text) { msg.textContent = '先写点内容再发送。'; return; }
+//     btn.disabled = true;
+//     msg.textContent = '发送中…';
+//     try {
+//       var res = await fetch(COLLECTOR_ENDPOINT, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ type: 'feedback', title: '站点留言', content: text }),
+//       });
+//       if (!res.ok) throw new Error('HTTP ' + res.status);
+//       document.getElementById('fbText').value = '';
+//       msg.textContent = '已发送，感谢反馈！';
+//     } catch (e) {
+//       msg.textContent = '发送失败（' + ((e && e.message) || e) + '），也可以走 GitHub Issue。';
+//     } finally {
+//       btn.disabled = false;
+//     }
+//   });
+// })();
 </script>
 </body>
 </html>
