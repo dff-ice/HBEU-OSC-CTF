@@ -1,13 +1,13 @@
 # 项目信息 / Project information
 site_name: Hello CTF
-site_url: https://hello-ctf.com/
+site_url: https://dff-ice.github.io/dff-ice-HBEU-OSC-CTF/
 site_author: 探姬
 site_description: 开源免费、新手友好的CTF(Capture The Flag,夺旗赛)入门教程
 
 # 仓库信息 / Repository 
-repo_name: Hello-CTF
-repo_url: https://github.com/ProbiusOfficial/Hello-CTF
-edit_uri: https://github.com/ProbiusOfficial/Hello-CTF/tree/main/docs/
+repo_name: dff-ice-HBEU-OSC-CTF
+repo_url: https://github.com/dff-ice/dff-ice-HBEU-OSC-CTF
+edit_uri: https://github.com/dff-ice/dff-ice-HBEU-OSC-CTF/tree/main/docs/
 
 # 版权声明 / Copyright
 copyright: Copyright &copy; 2026 探姬 
