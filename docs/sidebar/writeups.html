@@ -45,7 +45,9 @@
   .howto h2 { margin-bottom: 10px; font-size: 18px; }
   .howto p, .howto li { color: var(--ink-2); font-size: 13px; }
   .howto ol { margin: 10px 0 18px; padding-left: 20px; }
-  .template-link { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 9px; background: var(--ink); color: var(--paper); font-size: 12.5px; font-weight: 700; }
+  .template-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .template-link { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid transparent; border-radius: 9px; background: var(--ink); color: var(--paper); font-size: 12.5px; font-weight: 700; }
+  .template-link.secondary { border-color: var(--line); background: transparent; color: var(--ink); }
   .template-link:hover { opacity: .82; }
   @media (max-width: 1180px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 640px) { .wrap { padding: 30px 18px 70px; } .grid { grid-template-columns: 1fr; } }
@@ -83,7 +85,10 @@
         <li>在 <code>docs/hc-writeup/writeups.json</code> 的 <code>writeups</code> 数组中添加展示信息及文章路径。</li>
         <li>本地执行 <code>mkdocs serve</code> 检查页面，然后提交文章与索引。</li>
       </ol>
-      <a class="template-link" href="../hc-writeup/template/">打开 WP 投稿模板 <span aria-hidden="true">→</span></a>
+      <div class="template-actions">
+        <a class="template-link" href="../hc-writeup/template.md.txt" download="WP投稿模板.md">下载 WP 投稿模板 <span aria-hidden="true">↓</span></a>
+        <a class="template-link secondary" href="https://github.com/dff-ice/HBEU-OSC-CTF/pulls" target="_blank" rel="noopener">提交 WP <span aria-hidden="true">↗</span></a>
+      </div>
     </section>
   </main>
 </div>
