@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3ef46614-9630-4550-8aa2-91ba0073b6cd" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Hello-ctf.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/contents/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contents/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/hc-start/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/hc-start/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/shell/shell.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/shell/shell.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overrides/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/overrides/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overrides/partials/comments.html" beforeDir="false" afterPath="$PROJECT_DIR$/overrides/partials/comments.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/sidebar/writeups.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/sidebar/writeups.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,12 +22,12 @@
     &quot;assignee&quot;: &quot;dff-ice&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:dff-ice/HBEU-OSC-CTF.git",
-    "accountId": "f0d78659-27f3-4e88-bfd5-73dae9659e55"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:dff-ice/HBEU-OSC-CTF.git&quot;,
+    &quot;accountId&quot;: &quot;f0d78659-27f3-4e88-bfd5-73dae9659e55&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>

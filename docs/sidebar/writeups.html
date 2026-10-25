@@ -80,11 +80,12 @@
     <section class="howto">
       <h2>如何添加 WP</h2>
       <p>文章统一放在 <code>docs/hc-writeup/年份/比赛名称/</code> 下，按题目方向或题目名称创建 Markdown 文件。</p>
+      <p>复制投稿模板，填写题目背景、分析过程、复现步骤和经验总结。</p>
+      <p>Front Matter 中设置 type: writeup 、比赛、方向、作者和摘要。</p>
       <ol>
-        <li>复制投稿模板，填写题目背景、分析过程、复现步骤和经验总结。</li>
-        <li>在文章 Front Matter 中设置 <code>type: writeup</code>、比赛、方向、作者和摘要。</li>
-        <li>构建会自动生成 WP 卡片索引；文章内容也会自动进入全站搜索。</li>
-        <li>本地执行 <code>mkdocs serve</code> 检查页面，然后提交文章。</li>
+        <li>通过 GitHub 网页创建<code>.md</code>文件，直接编写或粘贴文章内容</li>
+        <li>提交修改。发起 Pull Request</li>
+        <li>管理员会审核 PR，确认内容和格式正确后合并，网站再通过部署流程更新。</li>
       </ol>
       <div class="template-actions">
         <a class="template-link" href="../hc-writeup/template.md.txt" download="WP投稿模板.md">下载 WP 投稿模板 <span aria-hidden="true">↓</span></a>
