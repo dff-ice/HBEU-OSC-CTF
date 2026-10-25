@@ -1,10 +1,12 @@
 ---
 title: "[比赛名称] - [方向] - [题目名称]"
+type: writeup
 date: YYYY-MM-DD
 authors:
   - "作者名"
 competition: "比赛名称"
 category: "Web / Crypto / Reverse / Pwn / Misc / Other"
+description: "用一句话概括题目考点和解题思路。"
 comments: true
 
 ---

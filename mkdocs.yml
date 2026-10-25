@@ -98,6 +98,10 @@ plugins:
       css_style:
         width: "50%"
 
+# 构建时扫描带有 type: writeup 的 WP 页面并生成展示列表。
+hooks:
+  - hooks/generate_writeups.py
+
 # 扩展
 markdown_extensions:
   - attr_list
@@ -361,6 +365,7 @@ nav:
 
 watch:
   - docs
+  - hooks
   - mkdocs.yml
   - overrides/main.html
   - overrides/404.html
