@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>比赛 WP · 经验分享 - HBEU-OSC-CTF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+<link rel="stylesheet" href="../shell/shell.css">
+<script>
+  if (localStorage.getItem('hc-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.7; transition: background .25s, color .25s; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--hl); }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 44px 32px 90px; }
+  .kicker { font: 12px var(--mono); letter-spacing: .14em; color: var(--accent); }
+  .page-head h1 { font-size: clamp(30px, 3.4vw, 40px); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; margin: 12px 0 10px; }
+  .page-head h1 .hl { background: linear-gradient(transparent 60%, var(--hl) 60%); }
+  .page-head .sub { max-width: 690px; color: var(--ink-2); font-size: 14.5px; }
+  .notice { margin-top: 24px; padding: 14px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--wash); color: var(--ink-2); font-size: 13px; }
+  .notice strong { color: var(--ink); }
+  .toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+  .search { display: flex; align-items: center; gap: 10px; flex: 1 1 260px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 10px 14px; }
+  .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font: inherit; font-size: 13px; }
+  .search .ic { color: var(--ink-3); }
+  .count { color: var(--ink-3); font: 12px var(--mono); }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+  .card { display: block; min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); transition: transform .18s, box-shadow .18s, border-color .18s; }
+  a.card:hover { transform: translateY(-3px); border-color: var(--ink); box-shadow: var(--shadow-pop); }
+  .card-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .card h2 { font-size: 15px; line-height: 1.5; font-weight: 700; }
+  .category { flex: 0 0 auto; color: var(--accent); font: 11px var(--mono); }
+  .desc { margin-top: 7px; color: var(--ink-2); font-size: 12.5px; }
+  .meta { margin-top: 13px; color: var(--ink-3); font: 11px var(--mono); }
+  .empty { text-align: center; padding: 54px 16px; color: var(--ink-3); font-size: 13.5px; }
+  .empty strong { display: block; margin-bottom: 4px; color: var(--ink-2); font-size: 15px; }
+  .howto { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); }
+  .howto h2 { margin-bottom: 10px; font-size: 18px; }
+  .howto p, .howto li { color: var(--ink-2); font-size: 13px; }
+  .howto ol { margin: 10px 0 18px; padding-left: 20px; }
+  .template-link { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 9px; background: var(--ink); color: var(--paper); font-size: 12.5px; font-weight: 700; }
+  .template-link:hover { opacity: .82; }
+  @media (max-width: 1180px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .wrap { padding: 30px 18px 70px; } .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="main">
+  <main class="wrap">
+    <header class="page-head">
+      <div class="kicker">WRITEUPS · 比赛复盘</div>
+      <h1>记录解题过程，<span class="hl">分享实战经验</span>。</h1>
+      <p class="sub">汇集 CTF 比赛题解与赛后复盘，覆盖不同比赛、题目方向和解题思路。欢迎队员与社区成员共同补充。</p>
+    </header>
+
+    <div class="notice"><strong>发布提示：</strong>请在比赛规则允许公开后发布 WP，并仅针对比赛授权的题目环境复现。分享前请移除令牌、口令和非公开地址等敏感信息。</div>
+
+    <div class="toolbar">
+      <label class="search">
+        <svg class="ic"><use href="#i-search"/></svg>
+        <input id="searchInput" type="search" placeholder="搜索比赛、题目、方向或作者" aria-label="搜索比赛 WP">
+      </label>
+      <span class="count" id="writeupCount">加载中…</span>
+    </div>
+    <section class="grid" id="writeupGrid" aria-live="polite"></section>
+    <div class="empty" id="emptyState" hidden>
+      <strong id="emptyTitle">暂时还没有比赛 WP</strong>
+      <span id="emptyText">欢迎使用投稿模板添加第一篇题解。</span>
+    </div>
+
+    <section class="howto">
+      <h2>如何添加 WP</h2>
+      <p>文章统一放在 <code>docs/hc-writeup/年份/比赛名称/</code> 下，按题目方向或题目名称创建 Markdown 文件。</p>
+      <ol>
+        <li>复制投稿模板，填写题目背景、分析过程、复现步骤和经验总结。</li>
+        <li>在 <code>docs/hc-writeup/writeups.json</code> 的 <code>writeups</code> 数组中添加展示信息及文章路径。</li>
+        <li>本地执行 <code>mkdocs serve</code> 检查页面，然后提交文章与索引。</li>
+      </ol>
+      <a class="template-link" href="../hc-writeup/template/">打开 WP 投稿模板 <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+</div>
+
+<script src="../shell/search.js"></script>
+<script src="../shell/shell.js"></script>
+<script>Shell.mount({ active: "writeups" });</script>
+<script>
+(function () {
+  var grid = document.getElementById("writeupGrid");
+  var search = document.getElementById("searchInput");
+  var count = document.getElementById("writeupCount");
+  var empty = document.getElementById("emptyState");
+  var emptyTitle = document.getElementById("emptyTitle");
+  var emptyText = document.getElementById("emptyText");
+  var posts = [];
+
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, function (char) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[char];
+    });
+  }
+
+  function render() {
+    var query = search.value.trim().toLowerCase();
+    var shown = posts.filter(function (post) {
+      return [post.title, post.competition, post.category, post.author, post.summary].join(" ").toLowerCase().indexOf(query) !== -1;
+    });
+    count.textContent = "共 " + shown.length + " 篇 WP";
+    grid.innerHTML = shown.map(function (post) {
+      var content = '<div class="card-top"><h2>' + escapeHtml(post.title) + '</h2><span class="category">' + escapeHtml(post.category) + '</span></div>' +
+        '<p class="desc">' + escapeHtml(post.summary) + '</p>' +
+        '<p class="meta">' + escapeHtml(post.competition) + ' · ' + escapeHtml(post.date) + ' · ' + escapeHtml(post.author) + '</p>';
+      return post.url ? '<a class="card" href="' + escapeHtml(post.url) + '">' + content + '</a>' : '<article class="card">' + content + '</article>';
+    }).join("");
+    empty.hidden = shown.length !== 0;
+    if (posts.length && !shown.length) {
+      emptyTitle.textContent = "没有找到匹配的 WP";
+      emptyText.textContent = "试试其他关键词。";
+    } else {
+      emptyTitle.textContent = "暂时还没有比赛 WP";
+      emptyText.textContent = "欢迎使用投稿模板添加第一篇题解。";
+    }
+  }
+
+  fetch("../hc-writeup/writeups.json")
+    .then(function (response) { if (!response.ok) throw new Error("WP 索引加载失败"); return response.json(); })
+    .then(function (data) { posts = Array.isArray(data.writeups) ? data.writeups : []; render(); })
+    .catch(function () {
+      count.textContent = "索引暂不可用";
+      empty.hidden = false;
+      emptyTitle.textContent = "暂时无法加载 WP 列表";
+      emptyText.textContent = "请稍后刷新，或检查 writeups.json。";
+    });
+
+  search.addEventListener("input", render);
+})();
+</script>
+</body>
+</html>

@@ -19,6 +19,7 @@
     { key: "home",       icon: "i-home",     label: "首页",     href: siteUrl("/"),                        idx: "01" },
     { key: "start",      icon: "i-flag",     label: "开始阅读", href: siteUrl("/contents/"),                 idx: "02" },
     { key: "directions", icon: "i-globe",    label: "方向一览", href: siteUrl("/sidebar/directions.html"), idx: "03" },
+    { key: "writeups",   icon: "i-book",     label: "比赛 WP",  href: siteUrl("/sidebar/writeups.html"),   idx: "04" },
     { cap: "工具 · TOOLS" },
     { key: "tools",      icon: "i-toolbox",  label: "工具一览", href: siteUrl("/sidebar/tools.html") },
     { cap: "技能 · SKILL" },
