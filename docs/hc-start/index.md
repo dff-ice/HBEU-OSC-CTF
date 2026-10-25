@@ -4,8 +4,6 @@ comments: true
 ---
 # 快速开始
 
-<iframe src="//player.bilibili.com/player.html?aid=398221068&bvid=BV13o4y1x7L2&cid=1117061033&high_quality=1" width="100%" height="360" frameborder="no" scrolling="no" allowfullscreen="allowfullscreen"> </iframe> 
-
 ### 💖欢迎来到新手村x   
 
 !!! Tip "注意"   

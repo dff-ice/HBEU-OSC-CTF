@@ -180,7 +180,7 @@
         document.getElementById("fpAnnounce").innerHTML = '<div class="fp-item">公告加载失败</div>';
       }
       try {
-        const commits = await (await fetch("https://api.github.com/repos/ProbiusOfficial/Hello-CTF/commits?per_page=5")).json();
+        const commits = await (await fetch("https://api.github.com/repos/dff-ice/HBEU-OSC-CTF/commits?per_page=5")).json();
         if (!Array.isArray(commits)) throw new Error("rate limited");
         document.getElementById("fpCommits").innerHTML = commits.map(c => {
           const msg = c.commit.message.split("\n")[0];
