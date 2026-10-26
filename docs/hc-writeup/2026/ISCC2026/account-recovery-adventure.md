@@ -3,7 +3,6 @@ title: "ISCC 2026 - Web - 账号恢复大冒险"
 type: writeup
 date: 2026-10-26
 authors:
-  - "封釉"
   - "杨心凌"
 competition: "ISCC 2026"
 category: "Web"
@@ -13,7 +12,7 @@ comments: true
 
 # 账号恢复大冒险
 
-> 比赛：ISCC 2026　方向：Web　作者：封釉、杨心凌
+> 比赛：ISCC 2026　方向：Web　作者：杨心凌
 >
 > 仅在赛事授权的题目环境中复现。原稿中的邮箱、靶场地址、令牌和 Flag 已省略。
 

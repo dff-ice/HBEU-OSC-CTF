@@ -3,7 +3,6 @@ title: "ISCC 2026 - Misc - 数字奥秘"
 type: writeup
 date: 2026-10-26
 authors:
-  - "封釉"
   - "杨心凌"
 competition: "ISCC 2026"
 category: "Misc"
@@ -13,7 +12,7 @@ comments: true
 
 # 数字奥秘
 
-> 比赛：ISCC 2026　方向：Misc　作者：封釉、杨心凌
+> 比赛：ISCC 2026　方向：Misc　作者：杨心凌
 >
 > 仅在赛事授权的题目环境中复现。原稿中的邮箱、靶场地址和 Flag 已省略。
 

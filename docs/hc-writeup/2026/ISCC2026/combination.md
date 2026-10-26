@@ -3,7 +3,6 @@ title: "ISCC 2026 - Pwn - combination"
 type: writeup
 date: 2026-10-26
 authors:
-  - "封釉"
   - "杨心凌"
 competition: "ISCC 2026"
 category: "Pwn"
@@ -13,7 +12,7 @@ comments: true
 
 # combination
 
-> 比赛：ISCC 2026　方向：Pwn　作者：封釉、杨心凌
+> 比赛：ISCC 2026　方向：Pwn　作者：杨心凌
 >
 > 仅对赛事授权的本地题目实例复现。原稿中的公网目标地址、邮箱和 Flag 已省略；脚本默认本地运行。
 

@@ -3,7 +3,6 @@ title: "ISCC 2026 - Reverse - Conway's trap"
 type: writeup
 date: 2026-10-26
 authors:
-  - "封釉"
   - "杨心凌"
 competition: "ISCC 2026"
 category: "Reverse"
@@ -13,7 +12,7 @@ comments: true
 
 # Conway's trap
 
-> 比赛：ISCC 2026　方向：Reverse　作者：封釉、杨心凌
+> 比赛：ISCC 2026　方向：Reverse　作者：杨心凌
 >
 > 原稿中的邮箱、Flag 和公网地址已省略。题目二进制附件未随本次文件夹提供。
 
