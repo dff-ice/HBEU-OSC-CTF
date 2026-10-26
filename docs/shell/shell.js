@@ -57,7 +57,7 @@
     '<button class="menu-btn" id="menuBtn" aria-label="菜单">☰</button>' +
     '<div class="overlay" id="overlay"></div>' +
     '<aside class="sidebar" id="sidebar">' +
-      '<a class="logo" href="' + siteUrl("/") + '"><span class="mark">' + icon("i-flag") + '</span>Hello<em>CTF</em></a>' +
+      '<a class="logo" href="' + siteUrl("/") + '"><span class="mark">' + icon("i-flag") + '</span>HBEU-OSC <em>CTF</em></a>' +
       '<a class="nav-item" id="searchToggle" style="cursor:pointer">' + icon("i-search") + '搜索 <span class="idx">Ctrl+K</span></a>' +
       '<a class="nav-item" id="feedToggle">' + icon("i-mega") + '项目动态 <span class="feed-badge" id="feedBadge" hidden>0</span></a>' +
       '<div class="nav-wrap"><nav class="nav" id="navScroll">' + items + '</nav>' +
