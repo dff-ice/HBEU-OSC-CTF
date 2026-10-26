@@ -1,0 +1,49 @@
+{
+  "writeups": [
+    {
+      "title": "ISCC 2026 - Web - 账号恢复大冒险",
+      "competition": "ISCC 2026",
+      "category": "Web",
+      "author": "杨心凌",
+      "date": "2026-10-26",
+      "summary": "结合 JWT 状态信任缺陷与 MariaDB 报错型 SQL 注入，分析账号恢复流程中的越权问题。",
+      "url": "../hc-writeup/2026/ISCC2026/account-recovery-adventure/"
+    },
+    {
+      "title": "ISCC 2026 - Pwn - combination",
+      "competition": "ISCC 2026",
+      "category": "Pwn",
+      "author": "杨心凌",
+      "date": "2026-10-26",
+      "summary": "分析 UAF 与空字节越界，利用堆布局破坏构造任意读写并劫持返回地址。",
+      "url": "../hc-writeup/2026/ISCC2026/combination/"
+    },
+    {
+      "title": "ISCC 2026 - Reverse - Conway's trap",
+      "competition": "ISCC 2026",
+      "category": "Reverse",
+      "author": "杨心凌",
+      "date": "2026-10-26",
+      "summary": "逆向分析多轮字节变换与运行时 secret，反推输入 seed 并还原动态校验结果。",
+      "url": "../hc-writeup/2026/ISCC2026/conways-trap/"
+    },
+    {
+      "title": "ISCC 2026 - Web - 值班邮件台",
+      "competition": "ISCC 2026",
+      "category": "Web",
+      "author": "杨心凌",
+      "date": "2026-10-26",
+      "summary": "从邮件线索、双人复核和内部诊断路由中梳理值班邮件台的访问控制问题。",
+      "url": "../hc-writeup/2026/ISCC2026/duty-mailbox/"
+    },
+    {
+      "title": "ISCC 2026 - Misc - 数字奥秘",
+      "competition": "ISCC 2026",
+      "category": "Misc",
+      "author": "杨心凌",
+      "date": "2026-10-26",
+      "summary": "从伪装成 PNG 的附件提取 Brainfuck 数据，结合中国剩余定理与 SHA-256/XOR 还原题目结果。",
+      "url": "../hc-writeup/2026/ISCC2026/number-mystery/"
+    }
+  ]
+}
