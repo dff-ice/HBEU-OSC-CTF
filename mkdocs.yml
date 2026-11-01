@@ -358,6 +358,10 @@ nav:
         - 对象与燃气: hc-blockchain/Move/0x03.md
         - 多样的泛型: hc-blockchain/Move/0x04.md
 
+    - 比赛 WP:
+      - hc-writeup/index.md
+      - 写作教程: hc-writeup/guide.md
+
     - 附录:
       - 提问的智慧: hc-appendix/how-to-ask.md
       - NSSCTF平台使用: hc-appendix/NSSCTF_Usage.md

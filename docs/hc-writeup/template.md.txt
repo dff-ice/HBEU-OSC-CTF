@@ -1,19 +1,23 @@
 ---
+# ── 使用说明（可保留注释，不影响构建） ─────────────────────────
+# 1) 复制本文件为 .md，放到 docs/hc-writeup/<年份>/<比赛名>/ 下
+# 2) 图片/附件放同级 assets/，正文用相对路径引用
+# 3) 列表页只收录 type: writeup 的页面；字段缺失会影响排序与摘要
 title: "[比赛名称] - [方向] - [题目名称]"
 type: writeup
 date: YYYY-MM-DD
 authors:
   - "作者名"
 competition: "比赛名称"
-category: "Web / Crypto / Reverse / Pwn / Misc / Other"
-description: "用一句话概括题目考点和解题思路。"
+category: "Web"                    # Web / Crypto / Reverse / Pwn / Misc / AWD / AI / Blockchain / Other
+description: "用一句话概括题目考点和解题思路。"   # 列表摘要，建议 60 字以内
 comments: true
-
 ---
 
 # [题目名称]
 
 > 比赛：[比赛名称]　方向：[题目方向]　作者：[作者名]
+> 仅对赛事授权的题目环境复现；已移除令牌、口令、非公开地址等敏感信息。
 
 ## 题目信息
 
@@ -58,3 +62,12 @@ comments: true
 ## 参考资料
 
 - [资料名称](https://example.com) — [说明引用了哪些内容]
+
+<!--
+投稿前自查（渲染时不可见，可保留）：
+- [ ] type: writeup 已填写，date 为发布日
+- [ ] 目录/文件名符合规范，图片附件在 assets/ 且可访问
+- [ ] 正文包含思路、复现步骤、结果验证
+- [ ] 已移除 Flag、令牌、账号、非公开地址
+- [ ] 已注明引用来源，遵守赛规与许可证
+-->

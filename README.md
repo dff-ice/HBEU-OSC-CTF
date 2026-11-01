@@ -7,6 +7,7 @@ HBEU-OSC 是湖北工程学院的校园开源社团，倡导开放、协作、�
 ## 仓库内容
 
 - `docs/`：CTF 与网络安全学习文档，涵盖 MISC、Web、Crypto、Reverse、Pwn、AWD、AI 和区块链安全等方向，并包含环境配置、练习指引及工具导航。
+- `docs/hc-writeup/`：比赛 WP 与[写作教程](docs/hc-writeup/guide.md)，含投稿模板、自动索引和审核清单。
 - `overrides/`：MkDocs Material 主题模板和站点页面覆写。
 - `admin/`：用于编辑首页内容、文档和工具列表的本地管理面板。
 - `mkdocs.yml`：站点构建配置。
