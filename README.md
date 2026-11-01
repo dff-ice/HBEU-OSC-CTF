@@ -7,7 +7,7 @@ HBEU-OSC 是湖北工程学院的校园开源社团，倡导开放、协作、�
 ## 仓库内容
 
 - `docs/`：CTF 与网络安全学习文档，涵盖 MISC、Web、Crypto、Reverse、Pwn、AWD、AI 和区块链安全等方向，并包含环境配置、练习指引及工具导航。
-- `docs/hc-writeup/`：比赛 WP 与[写作教程](docs/hc-writeup/guide.md)，含投稿模板、自动索引和审核清单。
+- `docs/hc-writeup/`：比赛 WP 与投稿规范（见下方「比赛 WP 投稿」），含投稿模板与自动索引。
 - `overrides/`：MkDocs Material 主题模板和站点页面覆写。
 - `admin/`：用于编辑首页内容、文档和工具列表的本地管理面板。
 - `mkdocs.yml`：站点构建配置。
@@ -38,6 +38,40 @@ python -m mkdocs build
 ```
 
 浏览器访问 [http://127.0.0.1:8000](http://127.0.0.1:8000) 查看预览。
+
+## 比赛 WP 投稿
+
+比赛结束后，欢迎把解题过程整理成 WP 投到站点「比赛 WP」栏目。要求如下。
+
+**目录与命名**：`docs/hc-writeup/<年份>/<比赛名>/<题目>.md`，图片和附件放同级 `assets/`，文件名用英文小写加连字符（如 `ez-sql.md`）。
+
+**Front matter**（列表页靠它收录）：
+
+```yaml
+---
+title: "比赛名称 - 方向 - 题目名称"
+type: writeup
+date: 2026-01-01
+authors: ["作者名"]
+competition: "比赛名称"
+category: "Web"
+description: "一句话概括考点和思路"
+comments: true
+---
+```
+
+`type: writeup` 是收录开关，漏了不会出现在列表页；`date` 决定排序。
+
+**正文结构**：题目信息 → 解题思路 → 分析与复现（命令和输出）→ 核心代码 → 结果验证 → 复盘与经验 → 参考资料。
+
+**发布要求**：
+
+- 以「别人能复现」为标准，环境、命令、脚本、结果写全；
+- 删除真实 Flag、token、账号、公网地址等敏感信息；
+- 遵守比赛公开规则，只对授权环境复现；
+- 引用他人思路注明来源；代码 GPLv3、文档 CC BY-SA 4.0。
+
+**投稿流程**：fork 仓库 → 新建分支 → 按规范添加文件 → 本地 `python -m mkdocs build` 自检 → 发起 Pull Request，审核合并后自动部署。模板见 [WP 投稿模板](docs/hc-writeup/template.md.txt)。
 
 ## 参与维护
 
