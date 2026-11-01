@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello CTF — 从零开始，拿下你的第一面 flag</title>
+<link rel="icon" type="image/png" href="./assets/images/favicon.png">
+<link rel="stylesheet" href="./shell/shell.css">
+<style>
+  /* ===================== 页面级样式（外壳在 /shell/shell.css） ===================== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.7;
+    transition: background .25s, color .25s;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--hl); }
+
+  section { padding: 46px 0 8px; }
+
+  /* ===================== Banner（Hero + 渐隐日历） ===================== */
+  .banner {
+    position: relative; margin-top: 26px;
+    border: 1px solid var(--line); border-radius: 26px;
+    background:
+      radial-gradient(640px 320px at 88% -10%, rgba(37, 99, 235, .09), transparent 62%),
+      radial-gradient(520px 280px at -5% 110%, rgba(34, 211, 238, .08), transparent 60%),
+      var(--wash);
+    padding: 54px 56px 46px;
+    overflow: hidden;
+  }
+  .banner::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(37, 99, 235, .14) 1px, transparent 1px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(115deg, transparent 30%, #000 90%);
+    mask-image: linear-gradient(115deg, transparent 30%, #000 90%);
+  }
+  [data-theme="dark"] .banner::before { background-image: radial-gradient(rgba(96, 165, 250, .16) 1px, transparent 1px); }
+  .banner-grid {
+    position: relative;
+    display: grid; grid-template-columns: 1fr;
+    gap: 48px; align-items: start;
+  }
+
+  .kicker { font-family: var(--mono); font-size: 14px; color: var(--accent); min-height: 24px; letter-spacing: .02em; }
+  .cursor { display: inline-block; width: 9px; height: 17px; background: var(--accent); vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero h1 {
+    font-size: clamp(38px, 4.2vw, 58px);
+    font-weight: 800; letter-spacing: -.04em; line-height: 1.14;
+    margin: 16px 0 18px;
+  }
+  .hero h1 .hl { background: linear-gradient(transparent 60%, var(--hl) 60%); white-space: nowrap; }
+  .hero .sub { font-size: 16px; color: var(--ink-2); max-width: 520px; }
+  .cta-row { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 13px 28px; border-radius: 12px; font-size: 15px; font-weight: 700;
+    transition: transform .16s ease, box-shadow .16s ease, border-color .16s;
+  }
+  .btn .ic { width: 17px; height: 17px; }
+  .btn-dark { background: var(--ink); color: var(--paper); box-shadow: 0 12px 26px -12px rgba(15,23,42,.55); }
+  .btn-dark:hover { transform: translateY(-2px); box-shadow: var(--shadow-pop); }
+  .btn-line { border: 1.5px solid var(--line); color: var(--ink); background: transparent; }
+  .btn-line:hover { border-color: var(--ink); transform: translateY(-2px); }
+  .btn .arr { transition: transform .16s; }
+  .btn:hover .arr { transform: translateX(4px); }
+
+  /* ===================== 快速开始弹窗 ===================== */
+  .modal-mask {
+    position: fixed; inset: 0; z-index: 90;
+    background: rgba(15, 23, 42, .55);
+    display: grid; place-items: center; padding: 20px;
+    animation: fadein .16s ease;
+  }
+  @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+  .modal-mask[hidden] { display: none; }
+  .modal {
+    width: min(520px, 100%);
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 20px; box-shadow: var(--shadow-pop);
+    padding: 26px 26px 18px;
+    animation: popin .18s ease;
+  }
+  .modal-cap { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; color: var(--accent); }
+  .modal-title { font-size: 21px; font-weight: 800; letter-spacing: -.02em; margin: 6px 0 4px; }
+  .modal-sub { font-size: 13px; color: var(--ink-2); margin-bottom: 16px; }
+  .opt {
+    display: flex; align-items: center; gap: 14px;
+    border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 16px; margin-bottom: 10px; cursor: pointer;
+    transition: transform .15s, border-color .15s, box-shadow .15s;
+  }
+  .opt:hover { transform: translateY(-2px); border-color: var(--ink); box-shadow: var(--shadow-pop); }
+  .opt .oicon {
+    width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+    background: var(--wash); border: 1px solid var(--line);
+    display: grid; place-items: center; color: var(--ink); transition: all .15s;
+  }
+  .opt:hover .oicon { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .opt .oicon .ic { width: 19px; height: 19px; }
+  .opt .ot { font-weight: 800; font-size: 14.5px; }
+  .opt .ot .rec {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+    color: var(--accent); background: var(--accent-soft);
+    border-radius: 5px; padding: 1px 6px; margin-left: 7px; vertical-align: 1px;
+  }
+  .opt .od { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+  .opt .ogo { margin-left: auto; color: var(--ink-3); transition: all .15s; }
+  .opt:hover .ogo { color: var(--accent); transform: translateX(3px); }
+  .modal-foot { text-align: center; font-size: 11px; color: var(--ink-3); padding-top: 8px; font-family: var(--mono); }
+
+  /* ===================== CTF 导航 / 项目推荐 卡片 ===================== */
+  .nav-cap2 { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; color: var(--ink-3); margin-bottom: 12px; }
+  .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .proj-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .proj {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 18px 20px; background: var(--paper);
+    transition: transform .16s, border-color .16s, box-shadow .16s;
+  }
+  .proj:hover { transform: translateY(-3px); border-color: var(--ink); box-shadow: var(--shadow-pop); }
+  .proj .t { font-weight: 800; font-size: 14.5px; display: flex; gap: 9px; align-items: center; }
+  .proj .t .ic { color: var(--ink-3); transition: color .16s; }
+  .proj:hover .t .ic { color: var(--accent); }
+  .proj .d { font-size: 12.5px; color: var(--ink-2); margin-top: 5px; }
+  .proj.ad {
+    border-style: dashed; border-width: 1.5px; background: transparent;
+    display: grid; place-items: center; text-align: center; color: var(--ink-3);
+  }
+  .proj.ad .t { justify-content: center; color: var(--ink-3); }
+  .proj.ad:hover { border-color: var(--accent); color: var(--accent); box-shadow: none; }
+  .proj.ad:hover .t { color: var(--accent); }
+
+  /* ===================== 页脚 ===================== */
+  footer { margin-top: 60px; border-top: 1px solid var(--line); }
+  .foot-inner {
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    padding: 22px 0; font-size: 13px; color: var(--ink-3); flex-wrap: wrap;
+  }
+  .foot-inner .links { display: flex; gap: 18px; font-family: var(--mono); font-size: 12px; }
+  .foot-inner .links a:hover { color: var(--accent); }
+
+  /* ===================== 响应式 ===================== */
+  @media (max-width: 1280px) {
+    .banner-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+  @media (max-width: 1180px) {
+    .nav-grid { grid-template-columns: repeat(2, 1fr); }
+    .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 1080px) {
+    .banner { padding: 40px 28px; }
+    .banner-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 860px) {
+    .banner { margin-top: 72px; padding: 34px 22px; }
+  }
+  @media (max-width: 560px) {
+    .nav-grid { grid-template-columns: 1fr; }
+    .proj-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<script src="./shell/search.js"></script>
+<script src="./shell/shell.js"></script>
+<script>Shell.mount({ active: "home" });</script>
+
+<!-- ===================== 主区 ===================== -->
+<div class="main">
+<div class="container">
+
+  <!-- 首页横幅 -->
+  <div class="banner">
+    <div class="banner-grid">
+      <div class="hero">
+        <div class="kicker"><span id="typewriter"></span><span class="cursor"></span></div>
+        <h1>从零开始，<br>拿下你的第一面 <span class="hl">flag</span>。</h1>
+        <p class="sub">开源、免费、新手友好的 CTF 夺旗赛入门教程。<br>从环境搭建到打进第一场比赛，每一步都有题可练。</p>
+        <div class="cta-row">
+          <a class="btn btn-dark" id="startBtn" href="#"><svg class="ic"><use href="#i-flag"/></svg>快速开始 <span class="arr"><svg class="ic"><use href="#i-arrow"/></svg></span></a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CTF 导航（数据驱动：index_content.json 的 navCards，可在管理面板维护） -->
+  <section id="nav-cards">
+    <div class="sec-head">
+      <div class="sec-title">CTF 导航</div>
+      <a class="sec-more" href="./hc-appendix/how-to-ask/">→ 更多资源见附录</a>
+    </div>
+    <div id="navCards"></div>
+  </section>
+
+  <!-- 项目推荐（数据驱动：index_content.json 的 projects） -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-title">项目推荐</div>
+      <a class="sec-more" href="https://github.com/ProbiusOfficial" target="_blank" rel="noopener">→ GitHub @ProbiusOfficial</a>
+    </div>
+    <div class="proj-grid" id="projCards"></div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer>
+    <div class="foot-inner">
+      <span>© 2026 探姬 · Hello CTF — 向每一位开源贡献者致敬</span>
+      <div class="links">
+        <a href="https://github.com/dff-ice/HBEU-OSC-CTF" target="_blank" rel="noopener">GitHub</a><a href="https://www.nssctf.cn/" target="_blank" rel="noopener">NSSCTF</a><a href="https://github.com/dff-ice/HBEU-OSC-CTF/pulls" target="_blank" rel="noopener">参与共建</a>
+        <!-- 暂时隐藏群聊入口，保留链接供后续恢复：<a href="./sidebar/feedback.html">QQ 群</a> -->
+      </div>
+    </div>
+  </footer>
+
+</div>
+</div>
+
+<!-- 快速开始弹窗：三条入门路径 -->
+<div class="modal-mask" id="startModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="快速开始">
+    <div class="modal-cap">GET STARTED</div>
+    <div class="modal-title">从哪里开始？</div>
+    <p class="modal-sub">三条路，选一条最适合你的。</p>
+    <a class="opt" href="./hc-start/">
+      <span class="oicon"><svg class="ic"><use href="#i-flag"/></svg></span>
+      <div>
+        <div class="ot">快速开始<span class="rec">推荐新手</span></div>
+        <div class="od">一篇 10 分钟的入门指南：CTF 是什么、怎么学、从哪学</div>
+      </div>
+      <span class="ogo"><svg class="ic"><use href="#i-arrow"/></svg></span>
+    </a>
+    <a class="opt" href="./sidebar/first-flag.html">
+      <span class="oicon"><svg class="ic"><use href="#i-zap"/></svg></span>
+      <div>
+        <div class="ot">CTF 初体验</div>
+        <div class="od">不看教程直接上手：跟着引导亲手解出第一道题，感受夺旗的瞬间</div>
+      </div>
+      <span class="ogo"><svg class="ic"><use href="#i-arrow"/></svg></span>
+    </a>
+    <a class="opt" href="./contents/">
+      <span class="oicon"><svg class="ic"><use href="#i-book"/></svg></span>
+      <div>
+        <div class="ot">自由浏览文档</div>
+        <div class="od">已经有基础？直接进入完整教程目录，自己挑想看的</div>
+      </div>
+      <span class="ogo"><svg class="ic"><use href="#i-arrow"/></svg></span>
+    </a>
+    <div class="modal-foot">ESC 关闭 · 选错了也没关系，左侧导航随时能回来</div>
+  </div>
+</div>
+
+<script>
+/* ============ 打字机 ============ */
+(function () {
+  const lines = [
+    "$ whoami → future_ctf_player",
+    "$ hello-ctf --init",
+    "$ cat flag{w31c0me_t0_ctf}"
+  ];
+  const el = document.getElementById("typewriter");
+  let li = 0, ci = 0, deleting = false;
+  function tick() {
+    const line = lines[li];
+    if (!deleting) {
+      el.textContent = line.slice(0, ++ci);
+      if (ci === line.length) { deleting = true; return setTimeout(tick, 2200); }
+      setTimeout(tick, 55);
+    } else {
+      el.textContent = line.slice(0, --ci);
+      if (ci === 0) { deleting = false; li = (li + 1) % lines.length; return setTimeout(tick, 400); }
+      setTimeout(tick, 22);
+    }
+  }
+  tick();
+})();
+
+/* ============ 快速开始弹窗 ============ */
+(function () {
+  const modal = document.getElementById("startModal");
+  document.getElementById("startBtn").addEventListener("click", e => {
+    e.preventDefault();
+    modal.hidden = false;
+  });
+  modal.addEventListener("click", e => { if (e.target === modal) modal.hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") modal.hidden = true; });
+})();
+
+/* ============ CTF 导航 + 项目推荐卡片（index_content.json，可在管理面板维护；失败用内置兜底） ============ */
+(function () {
+  const FALLBACK = [
+    { group: "PRACTICE · 靶场", title: "循镜靶场", url: "https://platform.cyclens.tech/", desc: "综合 CTF 练习平台" },
+    { group: "PRACTICE · 靶场", title: "NSSCTF", url: "https://www.nssctf.cn/", desc: "本站教程例题直达平台" },
+    { group: "PRACTICE · 靶场", title: "CTFshow", url: "https://ctf.show/", desc: "新手友好的刷题平台" },
+    { group: "PRACTICE · 靶场", title: "CTF2（原BUU）", url: "https://ctf2.dasctf.com/", desc: "经典题库，Writeup 丰富" },
+    { group: "PRACTICE · 靶场", title: "CTFHub", url: "https://ctfhub.com/", desc: "技能树式闯关学习" },
+    { group: "COMMUNITY · 社区", title: "先知社区", url: "https://xz.aliyun.com/", desc: "阿里安全运营的技术社区" },
+    { group: "COMMUNITY · 社区", title: "看雪论坛", url: "https://bbs.kanxue.com/", desc: "二进制安全老牌社区" },
+    { group: "COMMUNITY · 社区", title: "FreeBuf", url: "https://www.freebuf.com/", desc: "安全行业资讯与干货" }
+  ];
+  const FALLBACK_PROJECTS = [
+    { title: "CTF-OS", url: "https://github.com/ProbiusOfficial/CTF-OS", desc: "为 CTF 选手打造的开箱即用操作系统", icon: "i-terminal" },
+    { title: "RCE-labs", url: "https://github.com/ProbiusOfficial/RCE-labs", desc: "命令执行漏洞靶场", icon: "i-target" },
+    { title: "PHPSerialize-labs", url: "https://github.com/ProbiusOfficial/PHPSerialize-labs", desc: "PHP 反序列化靶场", icon: "i-target" },
+    { title: "PHPinclude-labs", url: "https://github.com/ProbiusOfficial/PHPinclude-labs", desc: "文件包含漏洞靶场", icon: "i-target" },
+    { title: "n3tfl0w-labs", url: "https://github.com/ProbiusOfficial/n3tfl0w-labs", desc: "流量分析靶场", icon: "i-target" },
+    { title: "hello-ssrf", url: "https://github.com/ProbiusOfficial/hello-ssrf", desc: "SSRF 漏洞靶场", icon: "i-target" }
+  ];
+  function renderNav(cards) {
+    const groups = {};
+    cards.forEach(c => {
+      const g = c.group || "其他";
+      (groups[g] = groups[g] || []).push(c);
+    });
+    document.getElementById("navCards").innerHTML = Object.entries(groups).map(([g, items], gi) =>
+      '<div class="nav-cap2">' + g + "</div>" +
+      '<div class="nav-grid"' + (gi === 0 ? ' style="margin-bottom:22px"' : "") + ">" +
+      items.map(c =>
+        '<a class="proj" href="' + c.url + '" target="_blank" rel="noopener">' +
+          '<div class="t"><svg class="ic"><use href="#i-target"/></svg>' + c.title + "</div>" +
+          '<div class="d">' + (c.desc || "") + "</div>" +
+        "</a>"
+      ).join("") + "</div>"
+    ).join("");
+  }
+  function renderProjects(projects) {
+    document.getElementById("projCards").innerHTML = projects.map(c =>
+      '<a class="proj" href="' + c.url + '" target="_blank" rel="noopener">' +
+        '<div class="t"><svg class="ic"><use href="#' + (c.icon || "i-target") + '"/></svg>' + c.title + "</div>" +
+        '<div class="d">' + (c.desc || "") + "</div>" +
+      "</a>"
+    ).join("") +
+    '<a class="proj ad"><div><div class="t">广告位招租</div><div class="d">你的项目 / 平台可以出现在这里</div></div></a>';
+  }
+  fetch("./index_content.json")
+    .then(r => r.json())
+    .then(data => {
+      renderNav(Array.isArray(data.navCards) && data.navCards.length ? data.navCards : FALLBACK);
+      renderProjects(Array.isArray(data.projects) && data.projects.length ? data.projects : FALLBACK_PROJECTS);
+    })
+    .catch(() => { renderNav(FALLBACK); renderProjects(FALLBACK_PROJECTS); });
+})();
+</script>
+</body>
+</html>
